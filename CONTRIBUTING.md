@@ -2,6 +2,8 @@
 
 To develop on this project, please fork the repo and clone into your `$GOPATH`.
 
+NOTE: The scripts used in this repo haven't written or tested for Windows OS. 
+
 Dependencies are **not** checked in so please download those separately.
 Download the dependencies using [`dep`](https://github.com/golang/dep).
 
