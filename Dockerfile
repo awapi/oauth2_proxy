@@ -11,6 +11,8 @@ COPY . .
 # Fetch dependencies
 RUN dep ensure --vendor-only
 
+RUN go get github.com/alecthomas/gometalinter
+
 # Build binary and make sure there is at least an empty key file.
 #  This is useful for GCP App Engine custom runtime builds, because
 #  you cannot use multiline variables in their app.yaml, so you have to
