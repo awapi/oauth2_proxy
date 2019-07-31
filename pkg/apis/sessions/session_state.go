@@ -72,6 +72,8 @@ func (s *SessionState) EncodeSessionState(c *cookie.Cipher) (string, error) {
 		// Store only Email and User when cipher is unavailable
 		ss.Email = s.Email
 		ss.User = s.User
+		ss.IDToken = s.IDToken
+		ss.AccessToken = s.AccessToken
 	} else {
 		ss = *s
 		var err error
