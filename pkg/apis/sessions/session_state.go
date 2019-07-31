@@ -74,6 +74,7 @@ func (s *SessionState) EncodeSessionState(c *cookie.Cipher) (string, error) {
 		ss.User = s.User
 		ss.IDToken = s.IDToken
 		ss.AccessToken = s.AccessToken
+		//ss.RefreshToken = s.RefreshToken
 	} else {
 		ss = *s
 		var err error
