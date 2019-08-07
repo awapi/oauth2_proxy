@@ -4,6 +4,6 @@
 sudo apt-get install go-dep
 
 
-- install 
+- install - not required anymore 
 go get github.com/alecthomas/gometalinter
 
