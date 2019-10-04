@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Sessions
-permalink: /configuration
+permalink: /configuration/sessions
 parent: Configuration
 nav_order: 3
 ---
@@ -15,8 +15,8 @@ The OAuth2 Proxy uses a Cookie to track user sessions and will store the session
 data in one of the available session storage backends.
 
 At present the available backends are (as passed to `--session-store-type`):
-- [cookie](cookie-storage) (default)
-- [redis](redis-storage)
+- [cookie](#cookie-storage) (default)
+- [redis](#redis-storage)
 
 ### Cookie Storage
 
@@ -62,6 +62,6 @@ disclosure.
 When using the redis store, specify `--session-store-type=redis` as well as the Redis connection URL, via
 `--redis-connection-url=redis://host[:port][/db-number]`.
 
-You may also configure the store for Redis Sentinel. In this case, you will want to use the 
-`--redis-use-sentinel=true` flag, as well as configure the flags `--redis-sentinel-master-name` 
+You may also configure the store for Redis Sentinel. In this case, you will want to use the
+`--redis-use-sentinel=true` flag, as well as configure the flags `--redis-sentinel-master-name`
 and `--redis-sentinel-connection-urls` appropriately.

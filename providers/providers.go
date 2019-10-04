@@ -28,6 +28,8 @@ func New(provider string, p *ProviderData) Provider {
 		return NewFacebookProvider(p)
 	case "github":
 		return NewGitHubProvider(p)
+	case "keycloak":
+		return NewKeycloakProvider(p)
 	case "azure":
 		return NewAzureProvider(p)
 	case "gitlab":
@@ -36,6 +38,8 @@ func New(provider string, p *ProviderData) Provider {
 		return NewOIDCProvider(p)
 	case "login.gov":
 		return NewLoginGovProvider(p)
+	case "bitbucket":
+		return NewBitbucketProvider(p)
 	default:
 		return NewGoogleProvider(p)
 	}

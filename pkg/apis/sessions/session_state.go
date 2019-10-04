@@ -73,7 +73,7 @@ func (s *SessionState) EncodeSessionState(c *encryption.Cipher) (string, error) 
 		ss.Email = s.Email
 		ss.User = s.User
 		ss.IDToken = s.IDToken
-		ss.AccessToken = s.AccessToken
+		//ss.AccessToken = s.AccessToken
 		//ss.RefreshToken = s.RefreshToken
 	} else {
 		ss = *s

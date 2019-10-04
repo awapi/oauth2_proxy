@@ -480,7 +480,10 @@ func (p *OAuthProxy) GetRedirect(req *http.Request) (redirect string, err error)
 		return
 	}
 
-	redirect = req.Form.Get("rd")
+	redirect = req.Header.Get("X-Auth-Request-Redirect")
+	if req.Form.Get("rd") != "" {
+		redirect = req.Form.Get("rd")
+	}
 	if !p.IsValidRedirect(redirect) {
 		redirect = req.URL.Path
 		if strings.HasPrefix(redirect, p.ProxyPrefix) {
@@ -820,32 +823,60 @@ func (p *OAuthProxy) addHeadersForProxying(rw http.ResponseWriter, req *http.Req
 		req.Header["X-Forwarded-User"] = []string{session.User}
 		if session.Email != "" {
 			req.Header["X-Forwarded-Email"] = []string{session.Email}
+		} else {
+			req.Header.Del("X-Forwarded-Email")
 		}
 	}
+
 	if p.PassUserHeaders {
 		req.Header["X-Forwarded-User"] = []string{session.User}
 		if session.Email != "" {
 			req.Header["X-Forwarded-Email"] = []string{session.Email}
+		} else {
+			req.Header.Del("X-Forwarded-Email")
 		}
 	}
+
 	if p.SetXAuthRequest {
 		rw.Header().Set("X-Auth-Request-User", session.User)
 		if session.Email != "" {
 			rw.Header().Set("X-Auth-Request-Email", session.Email)
+		} else {
+			rw.Header().Del("X-Auth-Request-Email")
 		}
-		if p.PassAccessToken && session.AccessToken != "" {
-			rw.Header().Set("X-Auth-Request-Access-Token", session.AccessToken)
+
+		if p.PassAccessToken {
+			if session.AccessToken != "" {
+				rw.Header().Set("X-Auth-Request-Access-Token", session.AccessToken)
+			} else {
+				rw.Header().Del("X-Auth-Request-Access-Token")
+			}
 		}
 	}
-	if p.PassAccessToken && session.AccessToken != "" {
-		req.Header["X-Forwarded-Access-Token"] = []string{session.AccessToken}
+
+	if p.PassAccessToken {
+		if session.AccessToken != "" {
+			req.Header["X-Forwarded-Access-Token"] = []string{session.AccessToken}
+		} else {
+			req.Header.Del("X-Forwarded-Access-Token")
+		}
 	}
-	if p.PassAuthorization && session.IDToken != "" {
-		req.Header["Authorization"] = []string{fmt.Sprintf("Bearer %s", session.IDToken)}
+
+	if p.PassAuthorization {
+		if session.IDToken != "" {
+			req.Header["Authorization"] = []string{fmt.Sprintf("Bearer %s", session.IDToken)}
+		} else {
+			req.Header.Del("Authorization")
+		}
 	}
-	if p.SetAuthorization && session.IDToken != "" {
-		rw.Header().Set("Authorization", fmt.Sprintf("Bearer %s", session.IDToken))
+	if p.SetAuthorization {
+		if session.IDToken != "" {
+			rw.Header().Set("Authorization", fmt.Sprintf("Bearer %s", session.IDToken))
+		} else {
+			rw.Header().Del("Authorization")
+		}
 	}
+
 	if session.Email == "" {
 		rw.Header().Set("GAP-Auth", session.User)
 	} else {
@@ -898,7 +929,7 @@ func isAjax(req *http.Request) bool {
 	return false
 }
 
-// ErrorJSON returns the error code witht an application/json mime type
+// ErrorJSON returns the error code with an application/json mime type
 func (p *OAuthProxy) ErrorJSON(rw http.ResponseWriter, code int) {
 	rw.Header().Set("Content-Type", applicationJSON)
 	rw.WriteHeader(code)

@@ -15,6 +15,7 @@ Valid providers are :
 - [Azure](#azure-auth-provider)
 - [Facebook](#facebook-auth-provider)
 - [GitHub](#github-auth-provider)
+- [Keycloak](#keycloak-auth-provider)
 - [GitLab](#gitlab-auth-provider)
 - [LinkedIn](#linkedin-auth-provider)
 - [login.gov](#logingov-provider)
@@ -101,9 +102,23 @@ If you are using GitHub enterprise, make sure you set the following to the appro
     -redeem-url="http(s)://<enterprise github host>/login/oauth/access_token"
     -validate-url="http(s)://<enterprise github host>/api/v3"
 
+### Keycloak Auth Provider
+
+1.  Create new client in your Keycloak with **Access Type** 'confidental'.
+2.  Create a mapper with **Mapper Type** 'Group Membership'.
+
+Make sure you set the following to the appropriate url:
+
+    -provider=keycloak
+    -client-id=<client you have created>
+    -client-secret=<your client's secret>
+    -login-url="http(s)://<keycloak host>/realms/<your realm>/protocol/openid-connect/auth"
+    -redeem-url="http(s)://<keycloak host>/realms/master/<your realm>/openid-connect/auth/token"
+    -validate-url="http(s)://<keycloak host>/realms/master/<your realm>/openid-connect/userinfo"
+
 ### GitLab Auth Provider
 
-Whether you are using GitLab.com or self-hosting GitLab, follow [these steps to add an application](http://doc.gitlab.com/ce/integration/oauth_provider.html). Make sure to enable at least the `openid`, `profile` and `email` scopes.
+Whether you are using GitLab.com or self-hosting GitLab, follow [these steps to add an application](https://docs.gitlab.com/ce/integration/oauth_provider.html). Make sure to enable at least the `openid`, `profile` and `email` scopes.
 
 Restricting by group membership is possible with the following option:
 
@@ -126,7 +141,7 @@ For LinkedIn, the registration steps are:
 
 ### Microsoft Azure AD Provider
 
-For adding an application to the Microsoft Azure AD follow [these steps to add an application](https://azure.microsoft.com/en-us/documentation/articles/active-directory-integrating-applications/).
+For adding an application to the Microsoft Azure AD follow [these steps to add an application](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).
 
 Take note of your `TenantId` if applicable for your situation. The `TenantId` can be used to override the default `common` authorization server with a tenant specific server.
 
@@ -277,7 +292,7 @@ To authorize by email domain use `--email-domain=yourcompany.com`. To authorize 
 
 ## Adding a new Provider
 
-Follow the examples in the [`providers` package](providers/) to define a new
+Follow the examples in the [`providers` package]({{ site.gitweb }}/providers/) to define a new
 `Provider` instance. Add a new `case` to
-[`providers.New()`](providers/providers.go) to allow `oauth2_proxy` to use the
+[`providers.New()`]({{ site.gitweb }}/providers/providers.go) to allow `oauth2_proxy` to use the
 new `Provider`.

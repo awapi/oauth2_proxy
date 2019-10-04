@@ -55,7 +55,10 @@ func main() {
 
 	flagSet.Var(&emailDomains, "email-domain", "authenticate emails with the specified domain (may be given multiple times). Use * to authenticate any email")
 	flagSet.Var(&whitelistDomains, "whitelist-domain", "allowed domains for redirection after authentication. Prefix domain with a . to allow subdomains (eg .example.com)")
+	flagSet.String("keycloak-group", "", "restrict login to members of this group.")
 	flagSet.String("azure-tenant", "common", "go to a tenant-specific or common (tenant-independent) endpoint.")
+	flagSet.String("bitbucket-team", "", "restrict logins to members of this team")
+	flagSet.String("bitbucket-repository", "", "restrict logins to user with access to this repository")
 	flagSet.String("github-org", "", "restrict logins to members of this organisation")
 	flagSet.String("github-team", "", "restrict logins to members of this team")
 	flagSet.String("gitlab-group", "", "restrict logins to members of this group")
@@ -86,8 +89,8 @@ func main() {
 	flagSet.String("session-store-type", "cookie", "the session storage provider to use")
 	flagSet.String("redis-connection-url", "", "URL of redis server for redis session storage (eg: redis://HOST[:PORT])")
 	flagSet.Bool("redis-use-sentinel", false, "Connect to redis via sentinels. Must set --redis-sentinel-master-name and --redis-sentinel-connection-urls to use this feature")
-	flagSet.String("redis-sentinel-master-name", "", "Redis sentinel master name. Used in conjuction with --redis-use-sentinel")
-	flagSet.Var(&redisSentinelConnectionURLs, "redis-sentinel-connection-urls", "List of Redis sentinel connection URLs (eg redis://HOST[:PORT]). Used in conjuction with --redis-use-sentinel")
+	flagSet.String("redis-sentinel-master-name", "", "Redis sentinel master name. Used in conjunction with --redis-use-sentinel")
+	flagSet.Var(&redisSentinelConnectionURLs, "redis-sentinel-connection-urls", "List of Redis sentinel connection URLs (eg redis://HOST[:PORT]). Used in conjunction with --redis-use-sentinel")
 
 	flagSet.String("logging-filename", "", "File to log requests to, empty for stdout")
 	flagSet.Int("logging-max-size", 100, "Maximum size in megabytes of the log file before rotation")
